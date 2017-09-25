@@ -31,7 +31,7 @@ public class Storage
     public void printToFile(PrintWriter writer)
     {
         for(Map.Entry<Item, Integer> pair : items.entrySet())
-            writer.println(pair.getKey() + " quantity = " + pair.getValue());
+            writer.println(pair.getKey() + ", " + pair.getValue());
         writer.close();
     }
 
@@ -40,6 +40,16 @@ public class Storage
         String sCurrentLine;
         while ((sCurrentLine = reader.readLine()) != null) {
             System.out.println(sCurrentLine);
+        }
+    }
+
+    public void readFromFileToStorage(BufferedReader reader) throws IOException
+    {
+        String sCurrentLine;
+        while ((sCurrentLine = reader.readLine()) != null) {
+            String itemElements[] = sCurrentLine.split(", ");
+            Item itemToAdd = new Item(Integer.parseInt(itemElements[0]), itemElements[1], Double.parseDouble(itemElements[2]));
+            addItem(itemToAdd, Integer.parseInt(itemElements[3]));
         }
     }
 }

@@ -20,12 +20,10 @@ public class Shop
         PrintWriter writer = null;
         BufferedReader reader = null;
         // no dobra ale jak zrobic zeby robilo printwriter i reader tylko jak wola ta funkcje? przeniesc wszystko do funkcji? i w funkcji zrobic scanner i input zeby podawac sciezke?
-
-        // no dobra ale jak zrobic zeby robilo printwriter i reader tylko jak wola ta funkcje? przeniesc wszystko do funkcji? i w funkcji zrobic scanner i input zeby podawac sciezke?
         try
         {
             writer = new PrintWriter("F:\\joanna\\java\\workspace\\shop\\storage\\storage.txt", "UTF-8");
-            reader = new BufferedReader(new FileReader("F:\\joanna\\java\\workspace\\shop\\storage\\storage.txt"));
+            reader = new BufferedReader(new FileReader("F:\\joanna\\java\\workspace\\shop\\storage\\storage2.txt"));
         } catch (IOException e)
         {
             e.printStackTrace();
@@ -35,12 +33,13 @@ public class Shop
         Employee employee1 = new Employee(1234, storage);
         Shop shop = new Shop(storage, employee1);
 
+        storage.readFromFileToStorage(reader);
+
         employee1.addItem(new Item(1, "book", 10.0), 3);
         employee1.addItem(new Item(2, "boots", 20.0), 1);
         employee1.addItem(new Item(3, "coat", 10.0), 5);
-        employee1.addItem(new Item(1, "book", 10.0), 3);
-
+        employee1.addItem(new Item(5, "orange", 10.0), 3);
+        
         storage.printToFile(writer);
-        storage.readFromFile(reader);
     }
 }
