@@ -20,6 +20,8 @@ public class Shop
         PrintWriter writer = null;
         BufferedReader reader = null;
         // no dobra ale jak zrobic zeby robilo printwriter i reader tylko jak wola ta funkcje? przeniesc wszystko do funkcji? i w funkcji zrobic scanner i input zeby podawac sciezke?
+
+        // no dobra ale jak zrobic zeby robilo printwriter i reader tylko jak wola ta funkcje? przeniesc wszystko do funkcji? i w funkcji zrobic scanner i input zeby podawac sciezke?
         try
         {
             writer = new PrintWriter("F:\\joanna\\java\\workspace\\shop\\storage\\storage.txt", "UTF-8");

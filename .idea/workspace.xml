@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6119ba03-df26-459d-a85a-3c83083d3f4d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Employee.java" afterPath="$PROJECT_DIR$/src/Employee.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Item.java" afterPath="$PROJECT_DIR$/src/Item.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Shop.java" afterPath="$PROJECT_DIR$/src/Shop.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Storage.java" afterPath="$PROJECT_DIR$/src/Storage.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,7 +18,7 @@
         <entry file="file://$PROJECT_DIR$/src/Shop.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="408">
-              <caret line="24" column="56" lean-forward="false" selection-start-line="24" selection-start-column="56" selection-end-line="24" selection-end-column="56" />
+              <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -451,7 +447,7 @@
     <entry file="file://$PROJECT_DIR$/src/Shop.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
-          <caret line="24" column="56" lean-forward="false" selection-start-line="24" selection-start-column="56" selection-end-line="24" selection-end-column="56" />
+          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
