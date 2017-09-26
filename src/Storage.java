@@ -51,6 +51,7 @@ public class Storage
 
     public void printToFile(String fileName)
     {
+        /*
         PrintWriter writer = null;
         try
         {
@@ -63,6 +64,21 @@ public class Storage
         for(Map.Entry<Item, Integer> pair : items.entrySet())
             writer.println(pair.getKey() + ", " + pair.getValue());
         writer.close();
+        */
+        BufferedWriter writer = null;
+        try
+        {
+            writer = new BufferedWriter(new FileWriter("F:\\joanna\\java\\workspace\\shop\\storage\\" + fileName));
+            for(Map.Entry<Item, Integer> pair : items.entrySet())
+            {
+                writer.write(pair.getKey() + ", " + pair.getValue());
+                writer.newLine();
+            }
+            writer.close();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void addItemsFromFile(String fileName)
@@ -107,5 +123,5 @@ public class Storage
         for(Map.Entry<Item, Integer> pair : items.entrySet())
             System.out.println(pair.getKey() + ", " + pair.getValue());
     }
-    
+
 }
