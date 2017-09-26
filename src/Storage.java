@@ -5,12 +5,16 @@ public class Storage
 {
 
     private Map<Item, Integer> items;
+    private BufferedReader reader;
+    private BufferedWriter writer;
 // klasa <Item, int> int to quantity
     //i potem bedzie Map<id, ta klasa
 
-    public Storage()
+    public Storage(BufferedReader _reader, BufferedWriter _writer)
     {
         items = new HashMap<>();
+        reader = _reader;
+        writer = _writer;
     }
 
 //searchByName i searchById
@@ -30,28 +34,30 @@ public class Storage
                 Integer.parseInt(itemElements[3]));
     }
 
-    public void printFromFile(final String fileName)
+    public void addItemsFromFile(final BufferedReader reader)
     {
-        BufferedReader reader = null;
+        String sCurrentLine;
         try
         {
-            reader = new BufferedReader(new FileReader("F:\\joanna\\java\\workspace\\shop\\storage\\" + fileName));
-            String sCurrentLine;
             while ((sCurrentLine = reader.readLine()) != null) {
-                System.out.println(sCurrentLine);
+                addItemFromString(sCurrentLine);
             }
         } catch (IOException e)
         {
             e.printStackTrace();
+        }finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public void printToFile(final String fileName)
+    public void printToFile(BufferedWriter writer) throws IOException
     {
-        BufferedWriter writer = null;
         try
         {
-            writer = new BufferedWriter(new FileWriter("F:\\joanna\\java\\workspace\\shop\\storage\\" + fileName));
             for(Map.Entry<Item, Integer> pair : items.entrySet())
             {
                 writer.write(pair.getKey() + ", " + pair.getValue());
@@ -64,38 +70,50 @@ public class Storage
         }
     }
 
-    public void addItemsFromFile(final String fileName)
+    public void printToFile(String fileName) throws IOException
     {
-        BufferedReader reader = null;
+        PrintWriter clear = new PrintWriter("F:\\joanna\\java\\workspace\\shop\\storage\\" + fileName);
+        clear.print("");
+        clear.close();
+        printToFile(writer);
+    }
+
+    public void printFromFile(BufferedReader reader)
+    {
         try
         {
-            reader = new BufferedReader(new FileReader("F:\\joanna\\java\\workspace\\shop\\storage\\" + fileName));
             String sCurrentLine;
-            while ((sCurrentLine = reader.readLine()) != null) {
-                final String itemElements[] = sCurrentLine.split(", ");
-                addItem(new Item(Integer.parseInt(itemElements[0]), itemElements[1], Double.parseDouble(itemElements[2])),
-                        Integer.parseInt(itemElements[3]));
-            }
+            while ((sCurrentLine = reader.readLine()) != null)
+                System.out.println(sCurrentLine);
         } catch (IOException e)
         {
             e.printStackTrace();
+        }finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public void readStorageFromFile(final String fileName)
+    public void readStorageFromFile()
     {
         items.clear();
-        BufferedReader reader = null;
         try
         {
-            reader = new BufferedReader(new FileReader("F:\\joanna\\java\\workspace\\shop\\storage\\" + fileName));
             String sCurrentLine;
-            while ((sCurrentLine = reader.readLine()) != null) {
+            while ((sCurrentLine = reader.readLine()) != null)
                 addItemFromString(sCurrentLine);
-            }
         } catch (IOException e)
         {
             e.printStackTrace();
+        }finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
