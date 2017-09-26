@@ -65,7 +65,7 @@ public class Storage
         writer.close();
     }
 
-    public void readFromFileToStorage(String fileName)
+    public void addItemsFromFile(String fileName)
     {
         BufferedReader reader = null;
         try
@@ -83,5 +83,29 @@ public class Storage
         }
     }
 
+    public void readStorageFromFile(String fileName)
+    {
+        items.clear();
+        BufferedReader reader = null;
+        try
+        {
+            reader = new BufferedReader(new FileReader("F:\\joanna\\java\\workspace\\shop\\storage\\" + fileName));
+            String sCurrentLine;
+            while ((sCurrentLine = reader.readLine()) != null) {
+                String itemElements[] = sCurrentLine.split(", ");
+                addItem(new Item(Integer.parseInt(itemElements[0]), itemElements[1], Double.parseDouble(itemElements[2])),
+                        Integer.parseInt(itemElements[3]));
+            }
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void printCurrentStorageStatus()
+    {
+        for(Map.Entry<Item, Integer> pair : items.entrySet())
+            System.out.println(pair.getKey() + ", " + pair.getValue());
+    }
     
 }

@@ -1,8 +1,4 @@
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -28,21 +24,25 @@ public class Shop
         int action;
         do
         {
-            System.out.println("1 print storage log | 2 load storage log | 3 save storage log | 4 add items | 5 exit");
+            System.out.println("0 print storage log | 1 load storage | 2 save storage log | 3 add items from file | 4 add items | 5 print current status | 6 exit");
             action = input.nextInt();
             switch(action)
             {
-                case 1:
+                case 0:
                     System.out.print("input file name: ");
                     storage.readFromFile(input.next());
                     break;
+                case 1:
+                    System.out.print("input file name: ");
+                    storage.readStorageFromFile(input.next());
+                    break;
                 case 2:
                     System.out.print("input file name: ");
-                    storage.readFromFileToStorage(input.next());
+                    storage.printToFile(input.next());
                     break;
                 case 3:
                     System.out.print("input file name: ");
-                    storage.printToFile(input.next());
+                    storage.addItemsFromFile(input.next());
                     break;
                 case 4:
                     System.out.println("empty to exit");
@@ -59,7 +59,10 @@ public class Shop
                     break;
                 default:
                     break;
+                case 5:
+                    storage.printCurrentStorageStatus();
+                    break;
             }
-        }while(action != 5);
+        }while(action != 6);
     }
 }
