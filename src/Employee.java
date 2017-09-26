@@ -11,6 +11,6 @@ public class Employee
 
     public void addItem(final Item itemToAdd, final int quantity)
     {
-        storage.addItem(itemToAdd, quantity);
+       // storage.addItem(itemToAdd, quantity);
     }
 }

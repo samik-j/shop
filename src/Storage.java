@@ -1,18 +1,21 @@
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Storage
 {
 
     private Map<Item, Integer> items;
+// klasa <Item, int> int to quantity
+    //i potem bedzie Map<id, ta klasa
 
     public Storage()
     {
         items = new HashMap<>();
     }
 
-    public void addItem(final Item itemToAdd, final int quantity)
+//searchByName i searchById
+
+    private void addItem(final Item itemToAdd, final int quantity)
     {
         if(items.containsKey(itemToAdd))
             items.put(itemToAdd, items.get(itemToAdd) + quantity);
@@ -20,20 +23,14 @@ public class Storage
             items.put(itemToAdd, quantity);
     }
 
-    public void addItemFromInput(String input)
+    public void addItemFromString(final String itemString)
     {
-        String itemElements[] = input.split(", ");
+        final String itemElements[] = itemString.split(", ");
         addItem(new Item(Integer.parseInt(itemElements[0]), itemElements[1], Double.parseDouble(itemElements[2])),
                 Integer.parseInt(itemElements[3]));
     }
 
-    public void printItems()
-    {
-        for(Map.Entry<Item, Integer> pair : items.entrySet())
-            System.out.println(pair.getKey() + " quantity = " + pair.getValue());
-    }
-
-    public void readFromFile(String fileName)
+    public void printFromFile(final String fileName)
     {
         BufferedReader reader = null;
         try
@@ -49,22 +46,8 @@ public class Storage
         }
     }
 
-    public void printToFile(String fileName)
+    public void printToFile(final String fileName)
     {
-        /*
-        PrintWriter writer = null;
-        try
-        {
-            writer = new PrintWriter("F:\\joanna\\java\\workspace\\shop\\storage\\" + fileName, "UTF-8");
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-
-        for(Map.Entry<Item, Integer> pair : items.entrySet())
-            writer.println(pair.getKey() + ", " + pair.getValue());
-        writer.close();
-        */
         BufferedWriter writer = null;
         try
         {
@@ -81,7 +64,7 @@ public class Storage
         }
     }
 
-    public void addItemsFromFile(String fileName)
+    public void addItemsFromFile(final String fileName)
     {
         BufferedReader reader = null;
         try
@@ -89,7 +72,7 @@ public class Storage
             reader = new BufferedReader(new FileReader("F:\\joanna\\java\\workspace\\shop\\storage\\" + fileName));
             String sCurrentLine;
             while ((sCurrentLine = reader.readLine()) != null) {
-                String itemElements[] = sCurrentLine.split(", ");
+                final String itemElements[] = sCurrentLine.split(", ");
                 addItem(new Item(Integer.parseInt(itemElements[0]), itemElements[1], Double.parseDouble(itemElements[2])),
                         Integer.parseInt(itemElements[3]));
             }
@@ -99,7 +82,7 @@ public class Storage
         }
     }
 
-    public void readStorageFromFile(String fileName)
+    public void readStorageFromFile(final String fileName)
     {
         items.clear();
         BufferedReader reader = null;
@@ -108,9 +91,7 @@ public class Storage
             reader = new BufferedReader(new FileReader("F:\\joanna\\java\\workspace\\shop\\storage\\" + fileName));
             String sCurrentLine;
             while ((sCurrentLine = reader.readLine()) != null) {
-                String itemElements[] = sCurrentLine.split(", ");
-                addItem(new Item(Integer.parseInt(itemElements[0]), itemElements[1], Double.parseDouble(itemElements[2])),
-                        Integer.parseInt(itemElements[3]));
+                addItemFromString(sCurrentLine);
             }
         } catch (IOException e)
         {
@@ -124,4 +105,25 @@ public class Storage
             System.out.println(pair.getKey() + ", " + pair.getValue());
     }
 
+    //przekombinowane?
+    private List<Item> getItemsSortedById()
+    {
+        List<Item> itemsSortedByIds = new ArrayList<>();
+        for(int i = 0; i < getSortedIds().size(); i++)
+        {
+            for(Item item : items.keySet())
+                if(getSortedIds().get(i) == item.getId())
+                    itemsSortedByIds.add(item);
+        }
+        return itemsSortedByIds;
+    }
+
+    private List<Integer> getSortedIds()
+    {
+        List<Integer> ids = new ArrayList<>();
+        for(Map.Entry<Item, Integer> pair : items.entrySet())
+            ids.add(pair.getKey().getId());
+        Collections.sort(ids);
+        return ids;
+    }
 }

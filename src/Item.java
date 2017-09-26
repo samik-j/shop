@@ -11,6 +11,11 @@ public class Item
         price = _price;
     }
 
+    public int getId()
+    {
+        return id;
+    }
+
     @Override
     public boolean equals(Object o)
     {

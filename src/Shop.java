@@ -21,39 +21,39 @@ public class Shop
         Employee employee1 = new Employee(1234, storage);
         Shop shop = new Shop(storage, employee1);
 
-        int action;
+        int action = -1;
         do
         {
-            System.out.println("0 print storage log | 1 load storage | 2 save storage log | 3 add items from file | 4 add items | 5 print current status | 6 exit");
+            System.out.println(" 0 print storage log from file \n 1 load storage \n 2 save storage log \n 3 add items from file \n 4 add items \n 5 print current storage status \n 6 exit");
             action = input.nextInt();
             switch(action)
             {
                 case 0:
-                    System.out.print("input file name: ");
-                    storage.readFromFile(input.next());
+                    System.out.print("file name: ");
+                    storage.printFromFile(input.next());
                     break;
                 case 1:
-                    System.out.print("input file name: ");
+                    System.out.print("file name: ");
                     storage.readStorageFromFile(input.next());
                     break;
                 case 2:
-                    System.out.print("input file name: ");
+                    System.out.print("file name: ");
                     storage.printToFile(input.next());
                     break;
                 case 3:
-                    System.out.print("input file name: ");
+                    System.out.print("file name: ");
                     storage.addItemsFromFile(input.next());
                     break;
                 case 4:
                     System.out.println("empty to exit");
-                    System.out.println("input item (id, name, price, quantity): ");
+                    System.out.println("item (id, name, price, quantity): ");
                     input.nextLine();
                     String inputS = "";
                     do
                     {
                         inputS = input.nextLine();
                         if(!inputS.isEmpty())
-                            storage.addItemFromInput(inputS);
+                            storage.addItemFromString(inputS);
 
                     }while(!inputS.isEmpty());
                     break;
