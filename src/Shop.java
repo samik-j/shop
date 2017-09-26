@@ -3,11 +3,14 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.Scanner;
 
 public class Shop
 {
     private Storage storage;
     private Employee employee1;
+    private static Scanner input = new Scanner(System.in).useLocale(Locale.US);
 
     public Shop(Storage _storage, Employee _employee1)
     {
@@ -17,29 +20,46 @@ public class Shop
 
     public static void main(String[] args) throws IOException
     {
-        PrintWriter writer = null;
-        BufferedReader reader = null;
-        // no dobra ale jak zrobic zeby robilo printwriter i reader tylko jak wola ta funkcje? przeniesc wszystko do funkcji? i w funkcji zrobic scanner i input zeby podawac sciezke?
-        try
-        {
-            writer = new PrintWriter("F:\\joanna\\java\\workspace\\shop\\storage\\storage.txt", "UTF-8");
-            reader = new BufferedReader(new FileReader("F:\\joanna\\java\\workspace\\shop\\storage\\storage2.txt"));
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
 
         Storage storage = new Storage();
         Employee employee1 = new Employee(1234, storage);
         Shop shop = new Shop(storage, employee1);
 
-        storage.readFromFileToStorage(reader);
+        int action;
+        do
+        {
+            System.out.println("1 print storage log | 2 load storage log | 3 save storage log | 4 add items | 5 exit");
+            action = input.nextInt();
+            switch(action)
+            {
+                case 1:
+                    System.out.print("input file name: ");
+                    storage.readFromFile(input.next());
+                    break;
+                case 2:
+                    System.out.print("input file name: ");
+                    storage.readFromFileToStorage(input.next());
+                    break;
+                case 3:
+                    System.out.print("input file name: ");
+                    storage.printToFile(input.next());
+                    break;
+                case 4:
+                    System.out.println("empty to exit");
+                    System.out.println("input item (id, name, price, quantity): ");
+                    input.nextLine();
+                    String inputS = "";
+                    do
+                    {
+                        inputS = input.nextLine();
+                        if(!inputS.isEmpty())
+                            storage.addItemFromInput(inputS);
 
-        employee1.addItem(new Item(1, "book", 10.0), 3);
-        employee1.addItem(new Item(2, "boots", 20.0), 1);
-        employee1.addItem(new Item(3, "coat", 10.0), 5);
-        employee1.addItem(new Item(5, "orange", 10.0), 3);
-        
-        storage.printToFile(writer);
+                    }while(!inputS.isEmpty());
+                    break;
+                default:
+                    break;
+            }
+        }while(action != 5);
     }
 }
