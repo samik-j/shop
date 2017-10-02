@@ -16,20 +16,22 @@ public class Storage
     private void addItem(final Item itemToAdd, final int quantity)
     {
         if(items.containsKey(itemToAdd.getId()))
-            items.get(itemToAdd.getId()).addQuantity(quantity);
+            items.get(itemToAdd.getId()).addQuantity(quantity); // jak jest wlozone to sprawdzic czy jest ten sam typ
         else
             items.put(itemToAdd.getId(), new ItemQuantity(itemToAdd, quantity));
     }
 
-    public void addItemFromString(final String itemString)
+    public void addItemFromString(final String itemString) // test dla book i other
     {
         final String itemElements[] = itemString.split(", ");
         final int id = Integer.parseInt(itemElements[0]);
         final String name = itemElements[2];
         final double price = Double.parseDouble(itemElements[3]);
-        String info = "";
-        for(int i = 4; i < itemElements.length - 1; i++)
-            info += itemElements[i];
+        String[] info = new String[itemElements.length - 5];
+
+        for(int i = 4, j = 0; i < itemElements.length - 1; i++, j++)
+            info[j] = itemElements[i];
+
         final int quantity = Integer.parseInt(itemElements[itemElements.length - 1]);
         switch(ItemType.valueOf(itemElements[1]))
         {
@@ -40,10 +42,9 @@ public class Storage
                 addItem(new Item(id, name, price), quantity);
                 break;
         }
-
     }
 
-    public void addItemsFromFile(final BufferedReader reader)
+    public void addItemsFromFile(final BufferedReader reader) // test dla book i other
     {
         String sCurrentLine;
         try
@@ -63,7 +64,7 @@ public class Storage
         }
     }
 
-    public void printToFile(BufferedWriter writer) throws IOException
+    public void printToFile(BufferedWriter writer) throws IOException // test book i other
     {
         try
         {
@@ -106,7 +107,7 @@ public class Storage
         }
     }
 
-    public void readStorageFromFile(BufferedReader reader)
+    public void readStorageFromFile(BufferedReader reader) // test dla book i other
     {
         items.clear();
         try

@@ -15,15 +15,6 @@ public class Item
         price = _price;
     }
 
-    public Item(int _id, ItemType _itemType, String _name, double _price)
-    {
-        itemType = _itemType;
-        id = _id;
-        name = _name;
-        price = _price;
-    }
-
-
     public int getId()
     {
         return id;

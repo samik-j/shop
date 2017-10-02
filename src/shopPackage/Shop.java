@@ -54,7 +54,7 @@ public class Shop
                     break;
                 case 4:
                     System.out.println("empty to exit");
-                    System.out.println("item (id, name, price, quantity): ");
+                    System.out.println("item (id, type, name, price, info..., quantity): ");
                     input.nextLine();
                     String inputS = "";
                     do

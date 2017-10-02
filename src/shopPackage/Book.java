@@ -4,17 +4,17 @@ public class Book extends Item
 {
     private String title;
 
-    public Book(int _id, String _name, double _price)
+    public Book(int _id, String _name, double _price, String[] info)
     {
         super(_id, _name, _price);
+        title = info[0];
         itemType = ItemType.BOOK;
     }
+    //zrobic compare zeby bylo do testow
 
-    public Book(int _id, String _name, double _price, String info)
+    @Override
+    public String toString()
     {
-        super(_id, _name, _price);
-        String itemElements[] = info.split(", ");
-        title = itemElements[0];
-        itemType = ItemType.BOOK;
+        return super.toString() + ", " + title;
     }
 }

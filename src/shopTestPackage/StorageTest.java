@@ -123,8 +123,23 @@ class StorageTest
     public void addItemFromStringIfBook()
     {
         storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
-        ItemQuantity expected = new ItemQuantity(new Book(1, "book", 2.0, "thisIsTitle"), 4);
+        String[] info = {"thisIsTitle"};
+        ItemQuantity expected = new ItemQuantity(new Book(1, "book", 2.0, info), 4);
         assertTrue(storage.getItemQuantityById(1).compare(expected));
     }
+
+    @Test
+    public void testPrintToFileDifferentItemTypes() throws IOException
+    {
+        storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
+        storage.addItemFromString("2, OTHER, sth, 2.0, 4");
+        BufferedWriter writer = mock(BufferedWriter.class);
+        storage.printToFile(writer);
+        verify(writer, times(1)).write("1, BOOK, book, 2.0, thisIsTitle, 4");
+        verify(writer, times(1)).write("2, OTHER, sth, 2.0, 4");
+        verify(writer, times(2)).newLine();
+        verify(writer, times(1)).close();
+    }
+
 }
 
