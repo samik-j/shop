@@ -1,19 +1,38 @@
+package shopPackage;
+
 public class Item
 {
     private int id;
     private String name;
     private double price;
+    protected ItemType itemType;
 
     public Item(int _id, String _name, double _price)
     {
+        itemType = ItemType.OTHER;
         id = _id;
         name = _name;
         price = _price;
     }
 
+    public Item(int _id, ItemType _itemType, String _name, double _price)
+    {
+        itemType = _itemType;
+        id = _id;
+        name = _name;
+        price = _price;
+    }
+
+
     public int getId()
     {
         return id;
+    }
+
+    public boolean compare(Item itemToCompare)
+    {
+        return itemType == itemToCompare.itemType && id == itemToCompare.id
+                && name.equals(itemToCompare.name) && price == itemToCompare.price;
     }
 
     @Override
@@ -36,6 +55,6 @@ public class Item
     @Override
     public String toString()
     {
-        return "" + id + ", " + name + ", " + price;
+        return "" + id + ", " + itemType + ", " + name + ", " + price;
     }
 }

@@ -1,3 +1,5 @@
+package shopPackage;
+
 import java.io.*;
 import java.util.Locale;
 import java.util.Scanner;
@@ -17,14 +19,12 @@ public class Shop
     public static void main(String[] args) throws IOException
     {
         String fileName = "storage.txt";
-        BufferedReader reader = new BufferedReader(new FileReader("F:\\joanna\\java\\workspace\\shop\\storage\\" + fileName));
-        BufferedWriter writer = new BufferedWriter(new FileWriter("F:\\joanna\\java\\workspace\\shop\\storage\\" + fileName, true));
 
-        Storage storage = new Storage(reader, writer);
+        Storage storage = new Storage();
         Employee employee1 = new Employee(1234, storage);
         Shop shop = new Shop(storage, employee1);
 
-        storage.readStorageFromFile();
+        storage.readStorageFromFile(getBufferedReaderForFile(fileName));
 
         int action = -1;
         do
@@ -41,39 +41,16 @@ public class Shop
             {
                 case 1:
                     System.out.print("file name: ");
-                    BufferedReader readerAlternative2 = null;
-                    try
-                    {
-                        readerAlternative2 = new BufferedReader(new FileReader("F:\\joanna\\java\\workspace\\shop\\storage\\" + input.next()));
-                    } catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
-                    storage.printFromFile(readerAlternative2);
+                    storage.printFromFile(getBufferedReaderForFile(input.next()));
                     break;
                 case 2:
                     System.out.print("file name: ");
-                    BufferedWriter writerAlternative = null;
-                    writerAlternative = new BufferedWriter(new FileWriter("F:\\joanna\\java\\workspace\\shop\\storage\\" + input.next()));
-                    storage.printToFile(writerAlternative);
+                    BufferedWriter writer = new BufferedWriter(new FileWriter("F:\\joanna\\java\\workspace\\shop\\storage\\" + input.next()));
+                    storage.printToFile(writer);
                     break;
                 case 3:
                     System.out.print("file name: ");
-                    BufferedReader readerAlternative = null;
-                    try
-                    {
-                        readerAlternative = new BufferedReader(new FileReader("F:\\joanna\\java\\workspace\\shop\\storage\\" + input.next()));
-                    } catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }finally {
-                        try {
-                            reader.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    storage.addItemsFromFile(readerAlternative);
+                    storage.addItemsFromFile(getBufferedReaderForFile(input.next()));
                     break;
                 case 4:
                     System.out.println("empty to exit");
@@ -85,7 +62,6 @@ public class Shop
                         inputS = input.nextLine();
                         if(!inputS.isEmpty())
                             storage.addItemFromString(inputS);
-
                     }while(!inputS.isEmpty());
                     break;
                 default:
@@ -96,6 +72,20 @@ public class Shop
             }
         }while(action != 6);
 
-        storage.printToFile(fileName);
+        BufferedWriter writer = new BufferedWriter(new FileWriter("F:\\joanna\\java\\workspace\\shop\\storage\\" + fileName, true));
+        storage.printToFile(fileName, writer);
+    }
+
+    private static BufferedReader getBufferedReaderForFile(String fileName)
+    {
+        BufferedReader reader = null;
+        try
+        {
+            reader = new BufferedReader(new FileReader("F:\\joanna\\java\\workspace\\shop\\storage\\" + fileName));
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return reader;
     }
 }
