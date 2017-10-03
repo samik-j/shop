@@ -24,7 +24,13 @@ public class Shop
         Employee employee1 = new Employee(1234, storage);
         Shop shop = new Shop(storage, employee1);
 
-        storage.readStorageFromFile(getBufferedReaderForFile(fileName));
+        try
+        {
+            storage.readStorageFromFile(getBufferedReaderForFile(fileName));
+        } catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
 
         int action = -1;
         do
@@ -50,7 +56,13 @@ public class Shop
                     break;
                 case 3:
                     System.out.print("file name: ");
-                    storage.addItemsFromFile(getBufferedReaderForFile(input.next()));
+                    try
+                    {
+                        storage.addItemsFromFile(getBufferedReaderForFile(input.next()));
+                    } catch (Exception e)
+                    {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case 4:
                     System.out.println("empty to exit");
@@ -61,7 +73,13 @@ public class Shop
                     {
                         inputS = input.nextLine();
                         if(!inputS.isEmpty())
-                            storage.addItemFromString(inputS);
+                            try
+                            {
+                                storage.addItemFromString(inputS);
+                            } catch (Exception e)
+                            {
+                                System.out.println(e.getMessage());
+                            }
                     }while(!inputS.isEmpty());
                     break;
                 default:

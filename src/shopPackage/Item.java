@@ -20,6 +20,11 @@ public class Item
         return id;
     }
 
+    public ItemType getItemType()
+    {
+        return itemType;
+    }
+
     public boolean compare(Item itemToCompare)
     {
         return itemType == itemToCompare.itemType && id == itemToCompare.id

@@ -20,7 +20,7 @@ class StorageTest
     Storage storage = new Storage();
 
     @Test
-    public void testReadStorageFromFile() throws IOException
+    public void testReadStorageFromFile() throws Exception
     {
         BufferedReader reader = mock(BufferedReader.class);
         when(reader.readLine()).thenReturn("1, OTHER, book, 2.3, 2", null);
@@ -36,7 +36,7 @@ class StorageTest
     }
 
     @Test
-    public void addItemFromString()
+    public void addItemFromString() throws Exception
     {
         storage.addItemFromString("1, OTHER, book, 2.0, 4");
         ItemQuantity expected = new ItemQuantity(new Item(1, "book", 2.0), 4);
@@ -44,7 +44,7 @@ class StorageTest
     }
 
     @Test
-    public void addItemFromStringMultipleItemsSameId()
+    public void addItemFromStringMultipleItemsSameId() throws Exception
     {
         storage.addItemFromString("1, OTHER, book, 2.0, 4");
         storage.addItemFromString("1, OTHER, book, 2.0, 9");
@@ -53,7 +53,7 @@ class StorageTest
     }
 
     @Test
-    public void addItemFromStringMultipleEntries()
+    public void addItemFromStringMultipleEntries() throws Exception
     {
         storage.addItemFromString("1, OTHER, book, 2.0, 4");
         storage.addItemFromString("2, OTHER, coat, 2.0, 4");
@@ -66,7 +66,7 @@ class StorageTest
     }
 
     @Test
-    public void addItemsFromFile() throws IOException
+    public void addItemsFromFile() throws Exception
     {
         BufferedReader reader = mock(BufferedReader.class);
         when(reader.readLine()).thenReturn("1, OTHER, book, 2.0, 4", "2, OTHER, sth, 2.2, 5", null);
@@ -80,21 +80,21 @@ class StorageTest
     }
 
     @Test
-    public void testGetItemQuantityByIdNoSuchIdReturnsNull()
+    public void testGetItemQuantityByIdNoSuchIdReturnsNull() throws Exception
     {
         storage.addItemFromString("1, OTHER, book, 2.0, 4");
         assertEquals(storage.getItemQuantityById(2), null);
     }
 
     @Test
-    public void testGetItemQuantityById()
+    public void testGetItemQuantityById() throws Exception
     {
         storage.addItemFromString("1, OTHER, book, 2.0, 4");
         assertTrue(storage.getItemQuantityById(1).compare(new ItemQuantity(new Item(1, "book", 2.0), 4)));
     }
 
     @Test
-    public void testGetAllItems()
+    public void testGetAllItems() throws Exception
     {
         storage.addItemFromString("1, OTHER, book, 2.0, 4");
         storage.addItemFromString("2, OTHER, sth, 2.0, 4");
@@ -107,7 +107,7 @@ class StorageTest
     }
 
     @Test
-    public void testPrintToFile() throws IOException
+    public void testPrintToFile() throws Exception
     {
         storage.addItemFromString("1, OTHER, book, 2.0, 4");
         storage.addItemFromString("2, OTHER, sth, 2.0, 4");
@@ -120,7 +120,7 @@ class StorageTest
     }
 
     @Test
-    public void addItemFromStringIfBook()
+    public void addItemFromStringIfBook() throws Exception
     {
         storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
         String[] info = {"thisIsTitle"};
@@ -129,7 +129,7 @@ class StorageTest
     }
 
     @Test
-    public void testPrintToFileDifferentItemTypes() throws IOException
+    public void testPrintToFileDifferentItemTypes() throws Exception
     {
         storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
         storage.addItemFromString("2, OTHER, sth, 2.0, 4");

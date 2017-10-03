@@ -13,38 +13,49 @@ public class Storage
         items = new HashMap<>();
     }
 
-    private void addItem(final Item itemToAdd, final int quantity)
+    private void addItem(final Item itemToAdd, final int quantity) throws MismatchItemTypeException
     {
-        if(items.containsKey(itemToAdd.getId()))
+        if(items.containsKey(itemToAdd.getId()) && getItemById(itemToAdd.getId()).getItemType().equals(itemToAdd.getItemType()))
             items.get(itemToAdd.getId()).addQuantity(quantity); // jak jest wlozone to sprawdzic czy jest ten sam typ
+        else if(items.containsKey(itemToAdd.getId()) && !getItemById(itemToAdd.getId()).getItemType().equals(itemToAdd.getItemType()))
+            throw new MismatchItemTypeException("Cannot add because item types are different");
         else
             items.put(itemToAdd.getId(), new ItemQuantity(itemToAdd, quantity));
     }
 
-    public void addItemFromString(final String itemString) // test dla book i other
+    public void addItemFromString(final String itemString) throws Exception // test dla book i other
     {
-        final String itemElements[] = itemString.split(", ");
-        final int id = Integer.parseInt(itemElements[0]);
-        final String name = itemElements[2];
-        final double price = Double.parseDouble(itemElements[3]);
-        String[] info = new String[itemElements.length - 5];
-
-        for(int i = 4, j = 0; i < itemElements.length - 1; i++, j++)
-            info[j] = itemElements[i];
-
-        final int quantity = Integer.parseInt(itemElements[itemElements.length - 1]);
-        switch(ItemType.valueOf(itemElements[1]))
+        try
         {
-            case BOOK:
-                addItem(new Book(id, name, price, info), quantity);
-                break;
-            case OTHER:
-                addItem(new Item(id, name, price), quantity);
-                break;
+            final String itemElements[] = itemString.split(", ");
+            final int id = Integer.parseInt(itemElements[0]);
+            final String name = itemElements[2];
+            final double price = Double.parseDouble(itemElements[3]);
+            String[] info = new String[itemElements.length - 5];
+
+            for (int i = 4, j = 0; i < itemElements.length - 1; i++, j++)
+                info[j] = itemElements[i];
+
+            final int quantity = Integer.parseInt(itemElements[itemElements.length - 1]);
+            switch (ItemType.valueOf(itemElements[1]))
+            {
+                case BOOK:
+                    addItem(new Book(id, name, price, info), quantity);
+                    break;
+                case OTHER:
+                    addItem(new Item(id, name, price), quantity);
+                    break;
+            }
+        }catch (MismatchItemTypeException e)
+        {
+            throw e;
+        }catch (Exception e)
+        {
+            throw new Exception("Wrong Item information format");
         }
     }
 
-    public void addItemsFromFile(final BufferedReader reader) // test dla book i other
+    public void addItemsFromFile(final BufferedReader reader) throws Exception // test dla book i other
     {
         String sCurrentLine;
         try
@@ -107,7 +118,7 @@ public class Storage
         }
     }
 
-    public void readStorageFromFile(BufferedReader reader) // test dla book i other
+    public void readStorageFromFile(BufferedReader reader) throws Exception // test dla book i other
     {
         items.clear();
         try
@@ -146,6 +157,11 @@ public class Storage
     public Map<Integer, ItemQuantity> getAllItems()
     {
         return items;
+    }
+
+    public Item getItemById(int id)
+    {
+        return items.get(id).getItem();
     }
 
 }
