@@ -14,7 +14,7 @@ public class ItemQuantity {
         return this.quantity;
     }
 
-    public void addQuantity(int _quantity) {
+    public void addQuantity(final int _quantity) {
         this.quantity += _quantity;
     }
 
@@ -22,7 +22,7 @@ public class ItemQuantity {
         return this.item;
     }
 
-    public boolean compare(ItemQuantity itemQuantityToCompare) {
+    public boolean compare(final ItemQuantity itemQuantityToCompare) {
         return this.item.compare(itemQuantityToCompare.getItem()) && this.quantity == itemQuantityToCompare.getQuantity();
     }
 

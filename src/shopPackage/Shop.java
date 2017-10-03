@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Shop {
     private Storage storage;
     private Employee employee1;
-    private static Scanner input = new Scanner(System.in).useLocale(Locale.US);
+    private static final Scanner input = new Scanner(System.in).useLocale(Locale.US);
     private static final String fileName = "storage.txt";
 
     public Shop(Storage _storage, Employee _employee1) {
@@ -95,7 +95,7 @@ public class Shop {
         }
     }
 
-    private void printStorageToFile(String fileName) {
+    private void printStorageToFile(final String fileName) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("F:\\joanna\\java\\workspace\\shop\\storage\\" + fileName, true));
             this.storage.clearAndPrintToFile(fileName, writer);
@@ -131,7 +131,7 @@ public class Shop {
 
     private void searchItemById() {
         System.out.println("enter id to search for:");
-        int id = input.nextInt();
+        final int id = input.nextInt();
         try {
             System.out.println(this.storage.getItemFromStorageById(id));
         } catch (ItemNotFoundException e) {
@@ -142,7 +142,7 @@ public class Shop {
     private void searchItemByName() {
         System.out.println("enter name of item to search for:");
         input.nextLine();
-        String name = input.nextLine();
+        final String name = input.nextLine();
         try {
             for(Item item : this.storage.getItemFromStorageByName(name))
                 System.out.println(item);
@@ -153,18 +153,18 @@ public class Shop {
 
     private void changePrice() {
         System.out.println("enter item id");
-        int id = input.nextInt();
+        final int id = input.nextInt();
         try {
             System.out.println(this.storage.getItemFromStorageById(id));
             System.out.println("enter new price");
-            double newPrice = input.nextDouble();
+            final double newPrice = input.nextDouble();
             this.storage.getItemFromStorageById(id).changePrice(newPrice);
         } catch (ItemNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    private static BufferedReader getBufferedReaderForFile(String fileName) {
+    private static BufferedReader getBufferedReaderForFile(final String fileName) {
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader("F:\\joanna\\java\\workspace\\shop\\storage\\" + fileName));

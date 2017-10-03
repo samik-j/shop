@@ -66,7 +66,7 @@ public class Storage {
         }
     }
 
-    public void printToFile(BufferedWriter writer) throws IOException {
+    public void printToFile(final BufferedWriter writer) throws IOException {
         try {
             for (Map.Entry<Integer, ItemQuantity> pair : this.items.entrySet()) {
                 writer.write(String.valueOf(pair.getValue().getItem()) + ", " + pair.getValue().getQuantity());
@@ -78,7 +78,7 @@ public class Storage {
         }
     }
 
-    public void clearAndPrintToFile(String fileName, BufferedWriter writer) throws IOException {
+    public void clearAndPrintToFile(final String fileName, final BufferedWriter writer) throws IOException {
         try {
             PrintWriter clear = new PrintWriter("F:\\joanna\\java\\workspace\\shop\\storage\\" + fileName);
             clear.print("");
@@ -89,7 +89,7 @@ public class Storage {
         }
     }
 
-    public static void printFromFile(BufferedReader reader) throws IOException {
+    public static void printFromFile(final BufferedReader reader) throws IOException {
         try {
             String currentLine;
             do {
@@ -105,7 +105,7 @@ public class Storage {
         }
     }
 
-    public void readStorageFromFile(BufferedReader reader) throws Exception {
+    public void readStorageFromFile(final BufferedReader reader) throws Exception {
         this.items.clear();
         this.addItemsFromFile(reader);
     }
@@ -115,7 +115,7 @@ public class Storage {
             System.out.println(pair.getValue().getItem() + ", " + pair.getValue().getQuantity());
     }
 
-    public ItemQuantity getItemQuantityById(int id) {
+    public ItemQuantity getItemQuantityById(final int id) {
         return this.items.get(id);
     }
 
@@ -123,7 +123,7 @@ public class Storage {
         return this.items;
     }
 
-    private Item getItemById(int id)
+    private Item getItemById(final int id)
     {
         return this.items.get(id).getItem();
     }
@@ -134,7 +134,7 @@ public class Storage {
         return this.items.get(id).getItem();
     }
 
-    private static void tryCloseReader(BufferedReader reader) throws IOException {
+    private static void tryCloseReader(final BufferedReader reader) throws IOException {
         try {
             reader.close();
         } catch (IOException e) {
@@ -142,8 +142,8 @@ public class Storage {
         }
     }
 
-    public Set<Item> getItemFromStorageByName(String name) throws ItemNotFoundException {
-        Set<Item> itemsFound = new HashSet<>();
+    public Set<Item> getItemFromStorageByName(final String name) throws ItemNotFoundException {
+        final Set<Item> itemsFound = new HashSet<>();
         for(Map.Entry<Integer, ItemQuantity> pair : this.items.entrySet()) {
             if(pair.getValue().getItem().getName().startsWith(name))
                 itemsFound.add(pair.getValue().getItem());

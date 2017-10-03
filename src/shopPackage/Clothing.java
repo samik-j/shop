@@ -11,7 +11,7 @@ public class Clothing extends Item {
         this.itemType = ItemType.CLOTHING;
     }
 
-    public boolean compare(Clothing clothingToCompare) {
+    public boolean compare(final Clothing clothingToCompare) {
         return super.compare(clothingToCompare) && this.size == clothingToCompare.size;
     }
 

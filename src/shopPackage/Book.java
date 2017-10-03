@@ -11,7 +11,7 @@ public class Book extends Item {
         this.itemType = ItemType.BOOK;
     }
 
-    public boolean compare(Book bookToCompare) {
+    public boolean compare(final Book bookToCompare) {
         return super.compare(bookToCompare) && this.title.equals(bookToCompare.title);
     }
 

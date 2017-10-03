@@ -29,11 +29,11 @@ public class Item {
         return this.price;
     }
 
-    public void changePrice(Double newPrice) {
+    public void changePrice(final Double newPrice) {
         this.price = newPrice;
     }
 
-    public boolean compare(Item itemToCompare) {
+    public boolean compare(final Item itemToCompare) {
         return this.itemType == itemToCompare.itemType && this.id == itemToCompare.id
                 && this.name.equals(itemToCompare.name) && this.price == itemToCompare.price;
     }
