@@ -6,7 +6,9 @@ import shopPackage.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -175,7 +177,43 @@ class StorageTest {
         assertThrows(ItemNotFoundException.class, () ->
         {
             storage.getItemFromStorageById(2);
-        });    }
+        });
+    }
+
+    @Test
+    public void testGetItemByNameIfHasSuch() throws Exception {
+        storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
+        storage.addItemFromString("2, BOOK, book, 2.0, thisIsTitle, 4");
+        storage.addItemFromString("3, OTHER, album, 2.0, thisIsTitle, 4");
+        Item expected1 = new Book(1, "book", 2.0, new String[]{"thisIsTitle"});
+        Item expected2 = new Book(2, "book", 2.0, new String[]{"thisIsTitle"});
+        Set<Item> itemsFoundExpected = new HashSet<>();
+        itemsFoundExpected.add(expected1);
+        itemsFoundExpected.add(expected2);
+        assertTrue(itemsFoundExpected.equals(storage.getItemFromStorageByName("book")));
+    }
+
+    @Test
+    public void testGetItemByNameIfHasSuchPartial() throws Exception {
+        storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
+        storage.addItemFromString("2, BOOK, blah, 2.0, thisIsTitle, 4");
+        storage.addItemFromString("3, OTHER, album, 2.0, thisIsTitle, 4");
+        Item expected1 = new Book(1, "book", 2.0, new String[]{"thisIsTitle"});
+        Item expected2 = new Book(2, "blah", 2.0, new String[]{"thisIsTitle"});
+        Set<Item> itemsFoundExpected = new HashSet<>();
+        itemsFoundExpected.add(expected1);
+        itemsFoundExpected.add(expected2);
+        assertTrue(itemsFoundExpected.equals(storage.getItemFromStorageByName("b")));
+    }
+
+    @Test
+    public void testGetItemByNameIfNoSuch() throws Exception {
+        storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
+        assertThrows(ItemNotFoundException.class, () ->
+        {
+            storage.getItemFromStorageByName("as");
+        });
+    }
 
 }
 

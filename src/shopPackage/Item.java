@@ -17,8 +17,20 @@ public class Item {
         return this.id;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     public ItemType getItemType() {
         return this.itemType;
+    }
+
+    public double getPrice() {
+        return this.price;
+    }
+
+    public void changePrice(Double newPrice) {
+        this.price = newPrice;
     }
 
     public boolean compare(Item itemToCompare) {

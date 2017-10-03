@@ -142,4 +142,14 @@ public class Storage {
         }
     }
 
+    public Set<Item> getItemFromStorageByName(String name) throws ItemNotFoundException {
+        Set<Item> itemsFound = new HashSet<>();
+        for(Map.Entry<Integer, ItemQuantity> pair : this.items.entrySet()) {
+            if(pair.getValue().getItem().getName().startsWith(name))
+                itemsFound.add(pair.getValue().getItem());
+        }
+        if(itemsFound.isEmpty())
+            throw new ItemNotFoundException("Item not found");
+        return itemsFound;
+    }
 }

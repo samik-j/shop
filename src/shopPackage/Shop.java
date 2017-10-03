@@ -50,6 +50,12 @@ public class Shop {
                 case 6:
                     this.searchItemById();
                     break;
+                case 7:
+                    this.searchItemByName();
+                    break;
+                case 8:
+                    this.changePrice();
+                    break;
                 default:
                     break;
             }
@@ -74,6 +80,8 @@ public class Shop {
                 " 4 add items \n" +
                 " 5 print current storage status \n" +
                 " 6 search item by id \n" +
+                " 7 search item by name \n" +
+                " 8 change price \n" +
                 " 99 exit and save to default file");
         return input.nextInt();
     }
@@ -131,6 +139,31 @@ public class Shop {
         }
     }
 
+    private void searchItemByName() {
+        System.out.println("enter name of item to search for:");
+        input.nextLine();
+        String name = input.nextLine();
+        try {
+            for(Item item : this.storage.getItemFromStorageByName(name))
+                System.out.println(item);
+        } catch (ItemNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void changePrice() {
+        System.out.println("enter item id");
+        int id = input.nextInt();
+        try {
+            System.out.println(this.storage.getItemFromStorageById(id));
+            System.out.println("enter new price");
+            double newPrice = input.nextDouble();
+            this.storage.getItemFromStorageById(id).changePrice(newPrice);
+        } catch (ItemNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     private static BufferedReader getBufferedReaderForFile(String fileName) {
         BufferedReader reader = null;
         try {
@@ -140,4 +173,5 @@ public class Shop {
         }
         return reader;
     }
+
 }
