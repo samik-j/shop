@@ -1,47 +1,40 @@
 package shopPackage;
 
-public class ItemQuantity
-{
+public class ItemQuantity {
 
     private Item item;
     private int quantity;
 
-    public ItemQuantity(Item _item, int _quantity)
-    {
-        item = _item;
-        quantity = _quantity;
+    public ItemQuantity(Item _item, int _quantity) {
+        this.item = _item;
+        this.quantity = _quantity;
     }
 
-    public int getQuantity()
-    {
-        return quantity;
+    public int getQuantity() {
+        return this.quantity;
     }
 
-    public void addQuantity(int _quantity)
-    {
-        quantity += _quantity;
+    public void addQuantity(int _quantity) {
+        this.quantity += _quantity;
     }
 
-    public Item getItem()
-    {
-        return item;
+    public Item getItem() {
+        return this.item;
     }
 
-    public boolean compare(ItemQuantity itemQuantityToCompare)
-    {
-        return item.compare(itemQuantityToCompare.getItem()) && quantity == itemQuantityToCompare.getQuantity();
+    public boolean compare(ItemQuantity itemQuantityToCompare) {
+        return this.item.compare(itemQuantityToCompare.getItem()) && this.quantity == itemQuantityToCompare.getQuantity();
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ItemQuantity that = (ItemQuantity) o;
+        ItemQuantity other = (ItemQuantity) o;
 
-        if (quantity != that.quantity) return false;
-        return item != null ? item.equals(that.item) : that.item == null;
+        if (this.quantity != other.quantity) return false;
+        return this.item != null ? this.item.equals(other.item) : other.item == null;
     }
 
 }

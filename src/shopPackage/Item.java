@@ -1,56 +1,48 @@
 package shopPackage;
 
-public class Item
-{
+public class Item {
     private int id;
     private String name;
     private double price;
     protected ItemType itemType;
 
-    public Item(int _id, String _name, double _price)
-    {
-        itemType = ItemType.OTHER;
-        id = _id;
-        name = _name;
-        price = _price;
+    public Item(int _id, String _name, double _price) {
+        this.itemType = ItemType.OTHER;
+        this.id = _id;
+        this.name = _name;
+        this.price = _price;
     }
 
-    public int getId()
-    {
-        return id;
+    public int getId() {
+        return this.id;
     }
 
-    public ItemType getItemType()
-    {
-        return itemType;
+    public ItemType getItemType() {
+        return this.itemType;
     }
 
-    public boolean compare(Item itemToCompare)
-    {
-        return itemType == itemToCompare.itemType && id == itemToCompare.id
-                && name.equals(itemToCompare.name) && price == itemToCompare.price;
+    public boolean compare(Item itemToCompare) {
+        return this.itemType == itemToCompare.itemType && this.id == itemToCompare.id
+                && this.name.equals(itemToCompare.name) && this.price == itemToCompare.price;
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Item item = (Item) o;
 
-        return id == item.id;
+        return this.id == item.id;
     }
 
     @Override
-    public int hashCode()
-    {
-        return id;
+    public int hashCode() {
+        return this.id;
     }
 
     @Override
-    public String toString()
-    {
-        return "" + id + ", " + itemType + ", " + name + ", " + price;
+    public String toString() {
+        return "" + this.id + ", " + this.itemType + ", " + this.name + ", " + this.price;
     }
 }
