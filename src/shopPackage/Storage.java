@@ -176,4 +176,16 @@ public class Storage {
             throw new ItemNotFoundException("Item not found");
         return itemsFound;
     }
+
+    public void removeQuantityOfItem(final int id, final int quantity) throws Exception {
+        if(this.items.containsKey(id)) {
+            if(this.items.get(id).getQuantity() >= quantity)
+                this.items.get(id).addQuantity(-quantity);
+            else
+                throw new Exception("quantity in store " + this.items.get(id).getQuantity());
+        }
+        else
+            throw new ItemNotFoundException("Item not found");
+    }
+
 }

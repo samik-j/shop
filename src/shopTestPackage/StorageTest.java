@@ -258,5 +258,30 @@ class StorageTest {
             storage.getItemsFromStorageByPriceRange(1.0, 1.5);
         });
     }
+
+    @Test
+    public void removeQuantityOfItemIfHasSuchQuantity() throws Exception {
+        storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
+        storage.removeQuantityOfItem(1, 2);
+        assertEquals(2, storage.getItemQuantityById(1).getQuantity());
+    }
+
+    @Test
+    public void removeQuantityOfItemIfHasNoQuantity() throws Exception {
+        storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
+        assertThrows(Exception.class, () ->
+        {
+            storage.removeQuantityOfItem(1, 5);
+        });
+    }
+
+    @Test
+    public void removeQuantityOfItemIfHasNoSuchItem() throws Exception {
+        storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
+        assertThrows(ItemNotFoundException.class, () ->
+        {
+            storage.removeQuantityOfItem(2, 5);
+        });
+    }
 }
 

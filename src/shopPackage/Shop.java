@@ -61,10 +61,13 @@ public class Shop {
                 case 3:
                     this.searchItemByPriceRange();
                     break;
+                case 4:
+                    this.buyItem();
+                    break;
                 default:
                     break;
             }
-        }while(action != 99);
+        }while(action != 0);
     }
 
     private void runAsEmployee() {
@@ -76,7 +79,7 @@ public class Shop {
                     this.printStorageFromFile();
                     break;
                 case 2:
-                    System.out.print("file name: ");
+                    System.out.print("file name:\t");
                     this.printStorageToFile(input.next());
                     break;
                 case 3:
@@ -100,7 +103,7 @@ public class Shop {
                 default:
                     break;
             }
-        } while (action != 99);
+        } while (action != 0);
     }
 
     private static int getCustomerAction() {
@@ -108,7 +111,8 @@ public class Shop {
                 " 1 search by name\n" +
                 " 2 search by type\n" +
                 " 3 search by price range\n" +
-                " 99 exit");
+                " 4 buy\n" +
+                " 0 exit");
         return input.nextInt();
     }
 
@@ -122,12 +126,12 @@ public class Shop {
                 " 6 search item by id\n" +
                 " 7 search item by name\n" +
                 " 8 change price\n" +
-                " 99 exit");
+                " 0 exit");
         return input.nextInt();
     }
 
     private void printStorageFromFile() {
-        System.out.print("file name: ");
+        System.out.print("file name:\t");
         try {
             Storage.printFromFile(getBufferedReaderForFile(input.next()));
         } catch (IOException e) {
@@ -145,7 +149,7 @@ public class Shop {
     }
 
     private void addItemsToStorageFromFile() {
-        System.out.print("file name: ");
+        System.out.print("file name:\t");
         try {
             this.storage.addItemsFromFile(getBufferedReaderForFile(input.next()));
         } catch (Exception e) {
@@ -155,7 +159,7 @@ public class Shop {
 
     private void addItemsToStorage() {
         System.out.println("empty to exit");
-        System.out.println("item (id, type, name, price, info..., quantity): ");
+        System.out.println("item (id, type, name, price, info..., quantity)");
         input.nextLine();
         String inputS = "";
         do {
@@ -170,7 +174,7 @@ public class Shop {
     }
 
     private void searchItemById() {
-        System.out.println("enter id to search for:");
+        System.out.print("enter id to search for\t");
         final int id = input.nextInt();
         try {
             System.out.println(this.storage.getItemFromStorageById(id));
@@ -180,7 +184,7 @@ public class Shop {
     }
 
     private void searchItemByName() {
-        System.out.println("enter name of item to search for:");
+        System.out.print("enter name of item to search for\t");
         input.nextLine();
         final String name = input.nextLine();
         try {
@@ -192,7 +196,7 @@ public class Shop {
     }
 
     private void searchItemByType() {
-        System.out.println("enter type of item to search for:\n \t BOOK | CLOTHING | OTHER");
+        System.out.println("enter type of item to search for\nBOOK | CLOTHING | OTHER");
         input.nextLine();
         final ItemType itemType = ItemType.valueOf(input.nextLine());
         try {
@@ -219,14 +223,29 @@ public class Shop {
     }
 
     private void changePrice() {
-        System.out.println("enter item id");
+        System.out.print("enter item id\t");
         final int id = input.nextInt();
         try {
             System.out.println(this.storage.getItemFromStorageById(id));
-            System.out.println("enter new price");
+            System.out.print("enter new price\t");
             final double newPrice = input.nextDouble();
             this.storage.getItemFromStorageById(id).changePrice(newPrice);
         } catch (ItemNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void buyItem() {
+        System.out.print("enter item id\t");
+        final int id = input.nextInt();
+        System.out.print("enter quantity\t");
+        final int quantity = input.nextInt();
+        try {
+            this.storage.removeQuantityOfItem(id, quantity);
+            System.out.println("bought |" + this.storage.getItemFromStorageById(id) + "| in quantity " + quantity);
+        } catch (ItemNotFoundException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
