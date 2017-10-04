@@ -6,20 +6,17 @@ import java.util.Scanner;
 
 public class Shop {
     private Storage storage;
-    private Employee employee1;
     private static final Scanner input = new Scanner(System.in).useLocale(Locale.US);
     private static final String fileName = "storage.txt";
 
-    public Shop(Storage _storage, Employee _employee1) {
+    public Shop(Storage _storage) {
         this.storage = _storage;
-        this.employee1 = _employee1;
     }
 
     public static void main(String[] args) {
 
         Storage storage = new Storage();
-        Employee employee1 = new Employee(1234, storage);
-        Shop shop = new Shop(storage, employee1);
+        Shop shop = new Shop(storage);
 
         shop.run();
     }
@@ -27,9 +24,36 @@ public class Shop {
     private void run() {
         this.readStorageFromFile();
 
+        String action ="";
+        do {
+            System.out.println("run as \tcustomer | c\n " +
+                    "\t\temployee | e");
+            action = input.next();
+            if(action.equals("c"))
+                runAsCustomer();
+            else if(action.equals("e"))
+                runAsEmployee();
+        }while(action != "c" || action !="e");
+
+        this.printStorageToFile(this.fileName);
+    }
+
+    private void readStorageFromFile() {
+        try {
+            this.storage.readStorageFromFile(getBufferedReaderForFile(this.fileName));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void runAsCustomer() {
+
+    }
+
+    private void runAsEmployee() {
         int action = -1;
         do {
-            action = getAction();
+            action = getEmployeeAction();
             switch (action) {
                 case 1:
                     this.printStorageFromFile();
@@ -60,19 +84,9 @@ public class Shop {
                     break;
             }
         } while (action != 99);
-
-        this.printStorageToFile(this.fileName);
     }
 
-    private void readStorageFromFile() {
-        try {
-            this.storage.readStorageFromFile(getBufferedReaderForFile(this.fileName));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private static int getAction() {
+    private static int getEmployeeAction() {
         System.out.println("" +
                 " 1 print storage log from alternative file \n" +
                 " 2 save storage log to alternative file\n" +
