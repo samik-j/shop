@@ -25,6 +25,7 @@ public class Storage {
         try {
             final String itemElements[] = itemString.split(", ");
             final int id = Integer.parseInt(itemElements[0]);
+            final ItemType itemType = ItemType.valueOf(itemElements[1]);
             final String name = itemElements[2];
             final double price = Double.parseDouble(itemElements[3]);
             String[] info = new String[itemElements.length - 5];
@@ -33,7 +34,7 @@ public class Storage {
                 info[j] = itemElements[i];
 
             final int quantity = Integer.parseInt(itemElements[itemElements.length - 1]);
-            switch (ItemType.valueOf(itemElements[1])) {
+            switch (itemType) {
                 case BOOK:
                     this.addItem(new Book(id, name, price, info), quantity);
                     break;
@@ -142,10 +143,33 @@ public class Storage {
         }
     }
 
-    public Set<Item> getItemFromStorageByName(final String name) throws ItemNotFoundException {
+    public Set<Item> getItemsFromStorageByName(final String name) throws ItemNotFoundException {
         final Set<Item> itemsFound = new HashSet<>();
         for(Map.Entry<Integer, ItemQuantity> pair : this.items.entrySet()) {
             if(pair.getValue().getItem().getName().startsWith(name))
+                itemsFound.add(pair.getValue().getItem());
+        }
+        if(itemsFound.isEmpty())
+            throw new ItemNotFoundException("Item not found");
+        return itemsFound;
+    }
+
+    public Set<Item> getItemsFromStorageByType(final ItemType itemType) throws ItemNotFoundException {
+        final Set<Item> itemsFound = new HashSet<>();
+        for(Map.Entry<Integer, ItemQuantity> pair : this.items.entrySet()) {
+            if(pair.getValue().getItem().getItemType().equals(itemType))
+                itemsFound.add(pair.getValue().getItem());
+        }
+        if(itemsFound.isEmpty())
+            throw new ItemNotFoundException("Item not found");
+        return itemsFound;
+    }
+
+    public Set<Item> getItemsFromStorageByPriceRange(final double min, final double max) throws ItemNotFoundException {
+        final Set<Item> itemsFound = new HashSet<>();
+        for(Map.Entry<Integer, ItemQuantity> pair : this.items.entrySet()) {
+            if(min <= pair.getValue().getItem().getPrice() &&
+                    pair.getValue().getItem().getPrice() <= max)
                 itemsFound.add(pair.getValue().getItem());
         }
         if(itemsFound.isEmpty())

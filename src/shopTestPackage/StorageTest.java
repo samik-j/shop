@@ -190,7 +190,7 @@ class StorageTest {
         Set<Item> itemsFoundExpected = new HashSet<>();
         itemsFoundExpected.add(expected1);
         itemsFoundExpected.add(expected2);
-        assertTrue(itemsFoundExpected.equals(storage.getItemFromStorageByName("book")));
+        assertTrue(itemsFoundExpected.equals(storage.getItemsFromStorageByName("book")));
     }
 
     @Test
@@ -203,7 +203,7 @@ class StorageTest {
         Set<Item> itemsFoundExpected = new HashSet<>();
         itemsFoundExpected.add(expected1);
         itemsFoundExpected.add(expected2);
-        assertTrue(itemsFoundExpected.equals(storage.getItemFromStorageByName("b")));
+        assertTrue(itemsFoundExpected.equals(storage.getItemsFromStorageByName("b")));
     }
 
     @Test
@@ -211,9 +211,52 @@ class StorageTest {
         storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
         assertThrows(ItemNotFoundException.class, () ->
         {
-            storage.getItemFromStorageByName("as");
+            storage.getItemsFromStorageByName("as");
         });
     }
 
+    @Test
+    public void testGetItemsByTypeIfHasSuchType() throws Exception {
+        storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
+        storage.addItemFromString("2, BOOK, blah, 2.0, thisIsTitle, 4");
+        storage.addItemFromString("3, OTHER, album, 2.0, 4");
+        Item expected1 = new Book(1, "book", 2.0, new String[]{"thisIsTitle"});
+        Item expected2 = new Book(2, "blah", 2.0, new String[]{"thisIsTitle"});
+        Set<Item> itemsFoundExpected = new HashSet<>();
+        itemsFoundExpected.add(expected1);
+        itemsFoundExpected.add(expected2);
+        assertTrue(itemsFoundExpected.equals(storage.getItemsFromStorageByType(ItemType.BOOK)));
+    }
+
+    @Test
+    public void testGetItemsByTypeIfNoSuch() throws Exception {
+        storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
+        assertThrows(ItemNotFoundException.class, () ->
+        {
+            storage.getItemsFromStorageByType(ItemType.OTHER);
+        });
+    }
+
+    @Test
+    public void testGetItemsByPriceRangeIfHasSuch() throws Exception {
+        storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
+        storage.addItemFromString("2, BOOK, blah, 5.0, thisIsTitle, 4");
+        storage.addItemFromString("3, OTHER, album, 2.0, 4");
+        Item expected1 = new Book(1, "book", 2.0, new String[]{"thisIsTitle"});
+        Item expected2 = new Item(3, "album", 2.0);
+        Set<Item> itemsFoundExpected = new HashSet<>();
+        itemsFoundExpected.add(expected1);
+        itemsFoundExpected.add(expected2);
+        assertTrue(itemsFoundExpected.equals(storage.getItemsFromStorageByPriceRange(1.0, 3.0)));
+    }
+
+    @Test
+    public void testGetItemsByPriceRangeIfNoSuch() throws Exception {
+        storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
+        assertThrows(ItemNotFoundException.class, () ->
+        {
+            storage.getItemsFromStorageByPriceRange(1.0, 1.5);
+        });
+    }
 }
 

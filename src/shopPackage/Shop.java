@@ -27,13 +27,14 @@ public class Shop {
         String action ="";
         do {
             System.out.println("run as \tcustomer | c\n " +
-                    "\t\temployee | e");
+                    "\t\temployee | e\n" +
+                    "\t\texit");
             action = input.next();
             if(action.equals("c"))
-                runAsCustomer();
+                this.runAsCustomer();
             else if(action.equals("e"))
-                runAsEmployee();
-        }while(action != "c" || action !="e");
+                this.runAsEmployee();
+        }while(!action.equals("exit"));
 
         this.printStorageToFile(this.fileName);
     }
@@ -47,7 +48,23 @@ public class Shop {
     }
 
     private void runAsCustomer() {
-
+        int action = -1;
+        do {
+            action = getCustomerAction();
+            switch(action) {
+                case 1:
+                    this.searchItemByName();
+                    break;
+                case 2:
+                    this.searchItemByType();
+                    break;
+                case 3:
+                    this.searchItemByPriceRange();
+                    break;
+                default:
+                    break;
+            }
+        }while(action != 99);
     }
 
     private void runAsEmployee() {
@@ -86,17 +103,26 @@ public class Shop {
         } while (action != 99);
     }
 
+    private static int getCustomerAction() {
+        System.out.println("" +
+                " 1 search by name\n" +
+                " 2 search by type\n" +
+                " 3 search by price range\n" +
+                " 99 exit");
+        return input.nextInt();
+    }
+
     private static int getEmployeeAction() {
         System.out.println("" +
-                " 1 print storage log from alternative file \n" +
+                " 1 print storage log from alternative file\n" +
                 " 2 save storage log to alternative file\n" +
-                " 3 add items from alternative file \n" +
-                " 4 add items \n" +
-                " 5 print current storage status \n" +
-                " 6 search item by id \n" +
-                " 7 search item by name \n" +
-                " 8 change price \n" +
-                " 99 exit and save to default file");
+                " 3 add items from alternative file\n" +
+                " 4 add items\n" +
+                " 5 print current storage status\n" +
+                " 6 search item by id\n" +
+                " 7 search item by name\n" +
+                " 8 change price\n" +
+                " 99 exit");
         return input.nextInt();
     }
 
@@ -158,7 +184,34 @@ public class Shop {
         input.nextLine();
         final String name = input.nextLine();
         try {
-            for(Item item : this.storage.getItemFromStorageByName(name))
+            for(Item item : this.storage.getItemsFromStorageByName(name))
+                System.out.println(item);
+        } catch (ItemNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void searchItemByType() {
+        System.out.println("enter type of item to search for:\n \t BOOK | CLOTHING | OTHER");
+        input.nextLine();
+        final ItemType itemType = ItemType.valueOf(input.nextLine());
+        try {
+            for(Item item : this.storage.getItemsFromStorageByType(itemType))
+                System.out.println(item);
+        } catch (ItemNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    private void searchItemByPriceRange() {
+        System.out.println("enter price range");
+        System.out.print("min: ");
+        final double min = input.nextDouble();
+        System.out.print("max: ");
+        final double max = input.nextDouble();
+        try {
+            for(Item item : this.storage.getItemsFromStorageByPriceRange(min, max))
                 System.out.println(item);
         } catch (ItemNotFoundException e) {
             System.out.println(e.getMessage());
