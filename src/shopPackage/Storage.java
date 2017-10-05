@@ -28,7 +28,7 @@ public class Storage {
             final ItemType itemType = ItemType.valueOf(itemElements[1]);
             final String name = itemElements[2];
             final double price = Double.parseDouble(itemElements[3]);
-            String[] info = new String[itemElements.length - 5]; //final
+            final String[] info = new String[itemElements.length - 5];
 
             for (int i = 4, j = 0; i < itemElements.length - 1; i++, j++)
                 info[j] = itemElements[i];
@@ -44,7 +44,8 @@ public class Storage {
                 case OTHER:
                     this.addItem(new Item(id, name, price), quantity);
                     break;
-                    //default throw UnussportedItrmType
+                default:
+                    throw new UnsupportedItemTypeException("unsupported item type");
             }
         } catch (MismatchItemTypeException e) {
             throw e;
