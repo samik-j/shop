@@ -295,5 +295,24 @@ class StorageTest {
         itemsFoundExpected.add(expected2);
         assertEquals(itemsFoundExpected, storage.getAllItems());
     }
+
+    @Test
+    public void removeItemIfHasSuch() throws Exception {
+        storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
+        storage.addItemFromString("2, BOOK, book, 2.0, thisIsTitle, 4");
+        Item expected1 = new Book(1, "book", 2.0, new String[]{"thisIsTitle"});
+        Set<Item> itemsFoundExpected = new HashSet<>();
+        itemsFoundExpected.add(expected1);
+        storage.removeItem(2);
+        assertEquals(itemsFoundExpected, storage.getAllItems());
+    }
+
+    @Test
+    public void removeItemIfHasNoSuchId() {
+        assertThrows(ItemNotFoundException.class, () ->
+        {
+            storage.removeItem(5);
+        });
+    }
 }
 

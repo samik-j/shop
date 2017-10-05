@@ -36,6 +36,7 @@ public class Shop {
         }while(!action.equals("exit"));
 
         this.printStorageToFile(this.fileName);
+
     }
 
     private void readStorageFromFile() {
@@ -102,6 +103,9 @@ public class Shop {
                 case 8:
                     this.changePrice();
                     break;
+                case 9:
+                    this.removeItemFromStorage();
+                    break;
                 default:
                     break;
             }
@@ -129,6 +133,7 @@ public class Shop {
                 " 6 search item by id\n" +
                 " 7 search item by name\n" +
                 " 8 change price\n" +
+                " 9 remove item\n" +
                 " 0 exit");
         return input.nextInt();
     }
@@ -232,6 +237,17 @@ public class Shop {
             System.out.print("enter new price\t");
             final double newPrice = input.nextDouble();
             this.storage.getItemFromStorageById(id).changePrice(newPrice);
+        } catch (ItemNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void removeItemFromStorage() {
+        System.out.print("enter item id\t");
+        final int id = input.nextInt();
+        try {
+            this.storage.removeItem(id);
+            System.out.println("removed item by id\t" + id);
         } catch (ItemNotFoundException e) {
             System.out.println(e.getMessage());
         }
