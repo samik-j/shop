@@ -14,7 +14,7 @@ public class Storage {
     private void addItem(final Item itemToAdd, final int quantity) throws MismatchItemTypeException {
         if (this.items.containsKey(itemToAdd.getId())) {
             if (this.getItemById(itemToAdd.getId()).getItemType().equals(itemToAdd.getItemType()))
-                this.items.get(itemToAdd.getId()).addQuantity(quantity);
+                this.items.get(itemToAdd.getId()).changeQuantityBy(quantity);
             else
                 throw new MismatchItemTypeException("Cannot add because item types are different");
         } else
@@ -28,7 +28,7 @@ public class Storage {
             final ItemType itemType = ItemType.valueOf(itemElements[1]);
             final String name = itemElements[2];
             final double price = Double.parseDouble(itemElements[3]);
-            String[] info = new String[itemElements.length - 5];
+            String[] info = new String[itemElements.length - 5]; //final
 
             for (int i = 4, j = 0; i < itemElements.length - 1; i++, j++)
                 info[j] = itemElements[i];
@@ -44,6 +44,7 @@ public class Storage {
                 case OTHER:
                     this.addItem(new Item(id, name, price), quantity);
                     break;
+                    //default throw UnussportedItrmType
             }
         } catch (MismatchItemTypeException e) {
             throw e;
@@ -120,8 +121,15 @@ public class Storage {
         return this.items.get(id);
     }
 
-    public Map<Integer, ItemQuantity> getAllItems() {
+    public Map<Integer, ItemQuantity> getAllIdAndItems() {
         return this.items;
+    }
+
+    public Set<Item> getAllItems() {
+        Set<Item> allItems = new HashSet<>();
+        for(Map.Entry<Integer, ItemQuantity> pair : this.items.entrySet())
+            allItems.add(pair.getValue().getItem());
+        return allItems;
     }
 
     private Item getItemById(final int id)
@@ -165,27 +173,37 @@ public class Storage {
         return itemsFound;
     }
 
-    public Set<Item> getItemsFromStorageByPriceRange(final double min, final double max) throws ItemNotFoundException {
+    public Set<Item> getItemsFromStorageByPriceRange(final double min, final double max, final Set<Item> items) throws ItemNotFoundException {
         final Set<Item> itemsFound = new HashSet<>();
-        for(Map.Entry<Integer, ItemQuantity> pair : this.items.entrySet()) {
-            if(min <= pair.getValue().getItem().getPrice() &&
-                    pair.getValue().getItem().getPrice() <= max)
-                itemsFound.add(pair.getValue().getItem());
+        for(Item item : items) {
+            if(min <= item.getPrice() &&
+                    item.getPrice() <= max)
+                itemsFound.add(item);
         }
         if(itemsFound.isEmpty())
             throw new ItemNotFoundException("Item not found");
         return itemsFound;
     }
 
-    public void removeQuantityOfItem(final int id, final int quantity) throws Exception {
+    public void addQuantityById(final int id, final int quantity) throws Exception {
         if(this.items.containsKey(id)) {
-            if(this.items.get(id).getQuantity() >= quantity)
-                this.items.get(id).addQuantity(-quantity);
+            if(this.items.get(id).getQuantity() + quantity >= 0)
+                this.items.get(id).changeQuantityBy(quantity);
             else
                 throw new Exception("quantity in store " + this.items.get(id).getQuantity());
         }
         else
             throw new ItemNotFoundException("Item not found");
+    }
+
+    public boolean hasQuantity(final int id, final int quantity) throws ItemNotFoundException {
+        if(this.items.containsKey(id)) {
+            if (this.items.get(id).getQuantity() - quantity >= 0)
+                return true;
+        }
+        else
+            throw new ItemNotFoundException("Item not found");
+        return false;
     }
 
 }

@@ -1,8 +1,7 @@
 package shopPackage;
 
 import java.io.*;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 public class Shop {
     private Storage storage;
@@ -50,7 +49,7 @@ public class Shop {
     private void runAsCustomer() {
         int action = -1;
         do {
-            action = getCustomerAction();
+            action = this.getCustomerAction();
             switch(action) {
                 case 1:
                     this.searchItemByName();
@@ -59,10 +58,13 @@ public class Shop {
                     this.searchItemByType();
                     break;
                 case 3:
-                    this.searchItemByPriceRange();
+                    this.searchItemByPriceRange(searchItemByType());
                     break;
                 case 4:
                     this.buyItem();
+                    break;
+                case 5:
+                    this.buyMultipleItems();
                     break;
                 default:
                     break;
@@ -73,7 +75,7 @@ public class Shop {
     private void runAsEmployee() {
         int action = -1;
         do {
-            action = getEmployeeAction();
+            action = this.getEmployeeAction();
             switch (action) {
                 case 1:
                     this.printStorageFromFile();
@@ -112,6 +114,7 @@ public class Shop {
                 " 2 search by type\n" +
                 " 3 search by price range\n" +
                 " 4 buy\n" +
+                " 5 buy multiple\n" +
                 " 0 exit");
         return input.nextInt();
     }
@@ -188,35 +191,34 @@ public class Shop {
         input.nextLine();
         final String name = input.nextLine();
         try {
-            for(Item item : this.storage.getItemsFromStorageByName(name))
-                System.out.println(item);
+            this.printItems(this.storage.getItemsFromStorageByName(name));
         } catch (ItemNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    private void searchItemByType() {
+    private Set<Item> searchItemByType() {
+        Set<Item> items = new HashSet<>();
         System.out.println("enter type of item to search for\nBOOK | CLOTHING | OTHER");
         input.nextLine();
         final ItemType itemType = ItemType.valueOf(input.nextLine());
         try {
-            for(Item item : this.storage.getItemsFromStorageByType(itemType))
-                System.out.println(item);
+            items.addAll(this.storage.getItemsFromStorageByType(itemType));
+            this.printItems(items);
         } catch (ItemNotFoundException e) {
             System.out.println(e.getMessage());
         }
-
+        return items;
     }
 
-    private void searchItemByPriceRange() {
+    private void searchItemByPriceRange(Set<Item> items) {
         System.out.println("enter price range");
         System.out.print("min: ");
         final double min = input.nextDouble();
         System.out.print("max: ");
         final double max = input.nextDouble();
         try {
-            for(Item item : this.storage.getItemsFromStorageByPriceRange(min, max))
-                System.out.println(item);
+            this.printItems(this.storage.getItemsFromStorageByPriceRange(min, max, items));
         } catch (ItemNotFoundException e) {
             System.out.println(e.getMessage());
         }
@@ -241,13 +243,56 @@ public class Shop {
         System.out.print("enter quantity\t");
         final int quantity = input.nextInt();
         try {
-            this.storage.removeQuantityOfItem(id, quantity);
+            this.storage.addQuantityById(id, -quantity);
             System.out.println("bought |" + this.storage.getItemFromStorageById(id) + "| in quantity " + quantity);
-        } catch (ItemNotFoundException e) {
-            System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private void buyMultipleItems() {
+        String addAnother = "";
+        Map<Integer, Integer> toBuy = new HashMap<>();
+        do {
+            addToBuy(toBuy);
+            System.out.println("add more items\t y | n");
+            addAnother = input.next();
+        }while(!addAnother.equals("n"));
+        try {
+            if(!toBuy.isEmpty()) {
+                for (Map.Entry<Integer, Integer> pair : toBuy.entrySet()) {
+                    this.storage.addQuantityById(pair.getKey(), -pair.getValue());
+                    System.out.println("bought |" + this.storage.getItemFromStorageById(pair.getKey()) + "| in quantity " + pair.getValue());
+                }
+            }
+            else
+                System.out.println("no items bought");
+        } catch(Exception e) {
+            e.getMessage();
+        }
+    }
+
+    private void addToBuy(Map<Integer, Integer> toBuy) {
+        System.out.print("enter item id\t");
+        int id = input.nextInt();
+        System.out.print("enter quantity\t");
+        final int quantity = input.nextInt();
+        try {
+            if (this.storage.hasQuantity(id, quantity)) {
+                if (toBuy.containsKey(id))
+                    toBuy.put(id, toBuy.get(id) + quantity);
+                else
+                    toBuy.put(id, quantity);
+            } else
+                System.out.println("quantity available\t" + this.storage.getItemQuantityById(id).getQuantity());
+        } catch (ItemNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void printItems(Set<Item> items) {
+        for(Item item : items)
+            System.out.println(item);
     }
 
     private static BufferedReader getBufferedReaderForFile(final String fileName) {

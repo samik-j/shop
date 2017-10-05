@@ -14,7 +14,7 @@ public class ItemQuantity {
         return this.quantity;
     }
 
-    public void addQuantity(final int _quantity) {
+    public void changeQuantityBy(final int _quantity) {
         this.quantity += _quantity;
     }
 

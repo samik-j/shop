@@ -18,7 +18,7 @@ class StorageTest {
 
     @Test
     public void defaultConstructorReturnEmptyStorage() {
-        assertTrue(storage.getAllItems().isEmpty());
+        assertTrue(storage.getAllIdAndItems().isEmpty());
     }
 
     @Test
@@ -70,7 +70,7 @@ class StorageTest {
         Map<Integer, ItemQuantity> expected = new HashMap<>();
         expected.put(1, expected1);
         expected.put(2, expected2);
-        assertTrue(storage.getAllItems().equals(expected));
+        assertTrue(storage.getAllIdAndItems().equals(expected));
     }
 
     @Test()
@@ -109,7 +109,7 @@ class StorageTest {
         Map<Integer, ItemQuantity> expected = new HashMap<>();
         expected.put(1, expected1);
         expected.put(2, expected2);
-        assertTrue(storage.getAllItems().equals(expected));
+        assertTrue(storage.getAllIdAndItems().equals(expected));
     }
 
     @Test
@@ -125,7 +125,7 @@ class StorageTest {
     }
 
     @Test
-    public void testGetAllItems() throws Exception {
+    public void testGetAllIdAndItems() throws Exception {
         storage.addItemFromString("1, OTHER, book, 2.0, 4");
         storage.addItemFromString("2, OTHER, sth, 2.0, 4");
         ItemQuantity expected1 = new ItemQuantity(new Item(1, "book", 2.0), 4);
@@ -133,7 +133,7 @@ class StorageTest {
         Map<Integer, ItemQuantity> expected = new HashMap<>();
         expected.put(1, expected1);
         expected.put(2, expected2);
-        assertTrue(storage.getAllItems().equals(expected));
+        assertTrue(storage.getAllIdAndItems().equals(expected));
     }
 
     @Test
@@ -247,7 +247,7 @@ class StorageTest {
         Set<Item> itemsFoundExpected = new HashSet<>();
         itemsFoundExpected.add(expected1);
         itemsFoundExpected.add(expected2);
-        assertTrue(itemsFoundExpected.equals(storage.getItemsFromStorageByPriceRange(1.0, 3.0)));
+        assertTrue(itemsFoundExpected.equals(storage.getItemsFromStorageByPriceRange(1.0, 3.0, storage.getAllItems())));
     }
 
     @Test
@@ -255,33 +255,45 @@ class StorageTest {
         storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
         assertThrows(ItemNotFoundException.class, () ->
         {
-            storage.getItemsFromStorageByPriceRange(1.0, 1.5);
+            storage.getItemsFromStorageByPriceRange(1.0, 1.5, storage.getAllItems());
         });
     }
 
     @Test
-    public void removeQuantityOfItemIfHasSuchQuantity() throws Exception {
+    public void substractQuantityIfHasSuchQuantity() throws Exception {
         storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
-        storage.removeQuantityOfItem(1, 2);
+        storage.addQuantityById(1, -2);
         assertEquals(2, storage.getItemQuantityById(1).getQuantity());
     }
 
     @Test
-    public void removeQuantityOfItemIfHasNoQuantity() throws Exception {
+    public void substractQuantityIfHasLessQuantity() throws Exception {
         storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
         assertThrows(Exception.class, () ->
         {
-            storage.removeQuantityOfItem(1, 5);
+            storage.addQuantityById(1, -5);
         });
     }
 
     @Test
-    public void removeQuantityOfItemIfHasNoSuchItem() throws Exception {
+    public void substractQuantityByIdIfHasNoSuchId() throws Exception {
         storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
         assertThrows(ItemNotFoundException.class, () ->
         {
-            storage.removeQuantityOfItem(2, 5);
+            storage.addQuantityById(2, 5);
         });
+    }
+
+    @Test
+    public void testGetAllItems() throws Exception {
+        storage.addItemFromString("1, BOOK, book, 2.0, thisIsTitle, 4");
+        storage.addItemFromString("2, BOOK, book, 2.0, thisIsTitle, 4");
+        Item expected1 = new Book(1, "book", 2.0, new String[]{"thisIsTitle"});
+        Item expected2 = new Book(2, "book", 2.0, new String[]{"thisIsTitle"});
+        Set<Item> itemsFoundExpected = new HashSet<>();
+        itemsFoundExpected.add(expected1);
+        itemsFoundExpected.add(expected2);
+        assertEquals(itemsFoundExpected, storage.getAllItems());
     }
 }
 

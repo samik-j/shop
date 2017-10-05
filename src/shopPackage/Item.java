@@ -29,11 +29,11 @@ public class Item {
         return this.price;
     }
 
-    public void changePrice(final Double newPrice) {
+    public void changePrice(final double newPrice) {
         this.price = newPrice;
     }
 
-    public boolean compare(final Item itemToCompare) {
+    public boolean compare(final Item itemToCompare) { // test it
         return this.itemType == itemToCompare.itemType && this.id == itemToCompare.id
                 && this.name.equals(itemToCompare.name) && this.price == itemToCompare.price;
     }
@@ -54,7 +54,7 @@ public class Item {
     }
 
     @Override
-    public String toString() {
+    public String toString() { // test it
         return "" + this.id + ", " + this.itemType + ", " + this.name + ", " + this.price;
     }
 }
