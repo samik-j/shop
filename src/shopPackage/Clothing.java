@@ -11,8 +11,12 @@ public class Clothing extends Item {
         this.itemType = ItemType.CLOTHING;
     }
 
-    public boolean compare(final Clothing clothingToCompare) {
-        return super.compare(clothingToCompare) && this.size == clothingToCompare.size;
+
+    @Override
+    public boolean compare(final Item clothingToCompare) {
+        if (clothingToCompare == null || this.getClass() != clothingToCompare.getClass()) return false;
+        Clothing clothing = (Clothing) clothingToCompare;
+        return super.compare(clothing) && this.size == clothing.size;
     }
 
     @Override

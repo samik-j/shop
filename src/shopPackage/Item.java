@@ -1,7 +1,7 @@
 package shopPackage;
 
 public class Item {
-    private int id;
+    private final int id;
     private String name;
     private double price;
     protected ItemType itemType;

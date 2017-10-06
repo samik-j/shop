@@ -2,7 +2,7 @@ package shopPackage;
 
 public class ItemQuantity {
 
-    private Item item;
+    private final Item item;
     private int quantity;
 
     public ItemQuantity(Item _item, int _quantity) {

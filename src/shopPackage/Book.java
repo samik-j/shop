@@ -11,8 +11,11 @@ public class Book extends Item {
         this.itemType = ItemType.BOOK;
     }
 
-    public boolean compare(final Book bookToCompare) {
-        return super.compare(bookToCompare) && this.title.equals(bookToCompare.title);
+    @Override
+    public boolean compare(final Item bookToCompare) {
+        if (bookToCompare == null || this.getClass() != bookToCompare.getClass()) return false;
+        Book book = (Book) bookToCompare;
+        return super.compare(book) && this.title.equals(book.title);
     }
 
     @Override

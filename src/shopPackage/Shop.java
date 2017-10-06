@@ -268,38 +268,46 @@ public class Shop {
 
     private void buyMultipleItems() {
         String addAnother = "";
-        Map<Integer, Integer> toBuy = new HashMap<>();
+        Map<Integer, Integer> basket = new HashMap<>();
         do {
-            addToBuy(toBuy);
+            addToBasket(basket);
             System.out.println("add more items\t y | n");
             addAnother = input.next();
         }while(!addAnother.equals("n"));
+        processBasket(basket);
+    }
+
+    private void processBasket(Map<Integer, Integer> basket) {
+        if(!basket.isEmpty())
+            removeBoughtItemsFromStorage(basket);
+        else
+            System.out.println("no items bought");
+    }
+
+    private void removeBoughtItemsFromStorage(Map<Integer, Integer> basket) {
         try {
-            if(!toBuy.isEmpty()) {
-                for (Map.Entry<Integer, Integer> pair : toBuy.entrySet()) {
-                    this.storage.addQuantityById(pair.getKey(), -pair.getValue());
-                    System.out.println("bought |" + this.storage.getItemFromStorageById(pair.getKey()) + "| in quantity " + pair.getValue());
-                }
+            for (Map.Entry<Integer, Integer> pair : basket.entrySet()) {
+                this.storage.addQuantityById(pair.getKey(), -pair.getValue());
+                System.out.println("bought |" + this.storage.getItemFromStorageById(pair.getKey()) + "| in quantity " + pair.getValue());
             }
-            else
-                System.out.println("no items bought");
         } catch(Exception e) {
             e.getMessage();
         }
     }
 
-    private void addToBuy(Map<Integer, Integer> toBuy) {
+    private void addToBasket(Map<Integer, Integer> basket) {
         System.out.print("enter item id\t");
-        int id = input.nextInt();
+        final int id = input.nextInt();
         System.out.print("enter quantity\t");
         final int quantity = input.nextInt();
         try {
             if (this.storage.hasQuantity(id, quantity)) {
-                if (toBuy.containsKey(id))
-                    toBuy.put(id, toBuy.get(id) + quantity);
+                if (basket.containsKey(id))
+                    basket.put(id, basket.get(id) + quantity);
                 else
-                    toBuy.put(id, quantity);
-            } else
+                    basket.put(id, quantity);
+            }
+            else
                 System.out.println("quantity available\t" + this.storage.getItemQuantityById(id).getQuantity());
         } catch (ItemNotFoundException e) {
             System.out.println(e.getMessage());
